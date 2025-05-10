@@ -1,31 +1,24 @@
-# Limine C Template
+Limine C 模板项目
+本仓库将演示如何使用 Limine 在 C 语言中设置基础内核。
 
-This repository will demonstrate how to set up a basic kernel in C using Limine.
+如何使用本项目？
+任何 make 命令都依赖于 GNU make (gmake)，且需要使用该工具运行。在大多数 GNU/Linux 发行版中通常直接使用 make 命令，在非 GNU 系统上可能需要使用 gmake。
+建议在标准的类 UNIX 系统上构建本项目，使用支持交叉编译的 Clang/LLVM 工具链。
 
-## How to use this?
+此外：
 
-### Dependencies
+使用 make all 生成 ISO 镜像需要 xorriso
+使用 make all-hdd 生成 HDD/USB 镜像需要：
+sgdisk（通常来自 gdisk 或 gptfdisk 软件包）/ mtools
 
-Any `make` command depends on GNU make (`gmake`) and is expected to be run using it. This usually means using `make` on most GNU/Linux distros, or `gmake` on other non-GNU systems.
+架构目标
+ARCH 编译变量决定目标架构：默认架构为 x86_64
 
-It is recommended to build this project using a standard UNIX-like system, using a Clang/LLVM toolchain capable of cross compilation.
-
-Additionally, building an ISO with `make all` requires `xorriso`, and building a HDD/USB image with `make all-hdd` requires `sgdisk` (usually from `gdisk` or `gptfdisk` packages) and `mtools`.
-
-### Architectural targets
-
-The `ARCH` make variable determines the target architecture to build the kernel and image for.
-
-The default `ARCH` is `x86_64`. Other options include: `aarch64`, `loongarch64`, and `riscv64`.
-
-### Makefile targets
-
-Running `make all` will compile the kernel (from the `kernel/` directory) and then generate a bootable ISO image.
-
-Running `make all-hdd` will compile the kernel and then generate a raw image suitable to be flashed onto a USB stick or hard drive/SSD.
-
-Running `make run` will build the kernel and a bootable ISO (equivalent to make all) and then run it using `qemu` (if installed).
-
-Running `make run-hdd` will build the kernel and a raw HDD image (equivalent to make all-hdd) and then run it using `qemu` (if installed).
-
-For x86_64, the `run-bios` and `run-hdd-bios` targets are equivalent to their non `-bios` counterparts except that they boot `qemu` using the default SeaBIOS firmware instead of OVMF.
+Makefile 目标
+make all	编译内核（位于 kernel/ 目录）并生成可启动的 ISO 镜像
+make all-hdd	编译内核并生成适合刷写到USB设备或硬盘/SSD的原始镜像
+make run	构建内核和可启动 ISO（等效于 make all）后使用 QEMU 运行（需已安装）
+make run-hdd	构建内核和原始 HDD 镜像（等效于 make all-hdd）后使用 QEMU 运行
+x86_64 特殊选项
+make run-bios	使用 SeaBIOS 固件启动（默认）替代 OVMF
+make run-hdd-bios	HDD 镜像版本使用 SeaBIOS 启动
