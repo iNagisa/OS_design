@@ -30,6 +30,8 @@ void kmain(void)
     }
 
     NA_printk("NAOS starting...\n");
+    NA_frame_init();
+    NA_heap_init();
 
     hcf();
 }
